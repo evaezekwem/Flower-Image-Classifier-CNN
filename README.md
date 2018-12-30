@@ -19,3 +19,6 @@ This repo contains data set and code to train a convolutional neural network to 
 
 ### To train the model 
 ```python image_classifier.py```
+
+## To Simply Load the Model
+- Navigate to the cell block in the notebook and run the cell then test the model.
