@@ -53,7 +53,7 @@ if __name__ == '__main__':
                         help="Specifies the folder containing the training and validation data")
     parser.add_argument('--save_dir', action='store', dest='save_dir',
                         help="Specifies the folder to save the trained model")
-    parser.add_argument('--arch', action='store', default='resnet', dest='model_arch',
+    parser.add_argument('--arch', default='resnet', choices=['vgg', 'resnet'], dest='model_arch',
                         help="Specifies the architecture of the model. 'resnet' or 'vgg'")
     parser.add_argument('--learning_rate', action='store', type=float, default=0.01, dest='lr',
                         help="Specifies the learning rate of the model")
