@@ -41,6 +41,7 @@ if __name__ == '__main__':
 	                    help="Specifies the json file containing the category name and mapping for all categories")
 	parser.add_argument('--gpu', action="store_false", default=True, dest='on_gpu')
 	
+	# Parse commandline arguments
 	args = parser.parse_args()
 	
 	print("#################....Parameters....##################")
