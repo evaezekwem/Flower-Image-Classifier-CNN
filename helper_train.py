@@ -10,17 +10,43 @@ from collections import OrderedDict
 import numpy as np
 
 def create_path(data_dir):
-    """
+	"""Return tuple of str for training, validation and test data sets
+	
+	Args:
+		data_dir (str): A string representing a directory containing sub-directories for
+			training, validation and test data sets
 
-    :rtype: tuple(str)
-    """
-    train_dir = data_dir + '/train'
-    valid_dir = data_dir + '/valid'
-    test_dir = data_dir + '/test'
-    return (data_dir, train_dir, valid_dir, test_dir)
+	Returns:
+		tuple: Returns a tuple of strings for
+			`data_dir` - data directory
+			`train_dir` - training data
+			`valid_dir` - validation data
+			`test_dir` - test data
+
+	"""
+	train_dir = data_dir + '/train'
+	valid_dir = data_dir + '/valid'
+	test_dir = data_dir + '/test'
+	return (data_dir, train_dir, valid_dir, test_dir)
     
 def create_data_loaders(train_dir, valid_dir, test_dir):
-	# number of subprocesses to use for data loading
+	"""Return data loaders for train, validation and test data
+	
+	Args:
+		train_dir (str): String representing the directory of the training data
+		valid_dir (str): String representing the directory of the validation data
+		test_dir (str): String representing the directory to the test data
+
+	Returns:
+		tuple: Returns a tuple of data loaders and class mapping for the training data
+			`train_loader` - Data Loader for the train data set
+			`valid_loader` - Data Loader for the validation data set
+			`test_loader` - Data Loader for the test data set
+			`class_to_idx` - Class to id mapping of the train data
+
+	"""
+	
+	# number of sub-processes to use for data loading
 	num_workers = 0
 	
 	# number of samples per batch to load
@@ -57,13 +83,31 @@ def create_data_loaders(train_dir, valid_dir, test_dir):
 	return(train_loader, valid_loader, test_loader, class_to_idx)
 
 def create_cat_to_name_dict(filepath):
+	"""Return a dictionary containing category names and keys from a json file
+	
+	Args:
+		filepath (str): Directory to a json file containing category names and keys for all data in train set
+
+	Returns:
+		dict: A python dictionary object mapping a key to each category in the file
+
+	"""
 	with open(filepath, 'r') as f:
 		cat_to_name = json.load(f)
 	
 	return cat_to_name
 
 def create_model(model_arch, hidden_units):
+	"""Return a PyTorch model
 	
+	Args:
+		model_arch (str): Specifies the desired model architecture. Takes either 'vgg' or 'resnet'. Default is 'resnet'
+		hidden_units (int): Specifies the number of neurons in the hidden units of the model.
+
+	Returns:
+		:obj: `torch.nn.Module` object
+
+	"""
 	if model_arch == 'vgg':
 		model = models.vgg11(pretrained=True)
 		for param in model.parameters():
@@ -95,20 +139,28 @@ def create_model(model_arch, hidden_units):
 		model.fc = classifier
 		return model
 	
-	
-
-def create_fc():
-	# Defining the feed forward Classifier
-	classifier = nn.Sequential(OrderedDict([('fc1', nn.Linear(2048, 512)),
-	                                        ('relu1', nn.ReLU()),
-	                                        ('dropout1', nn.Dropout(p=0.25)),
-	                                        ('fc2', nn.Linear(512, 102))
-	                                        ])
-	                           )
-	return classifier
-
 
 def train(model, epochs, lr, train_loader, valid_loader, class_to_idx, cat_to_name, save_dir, on_gpu, model_arch):
+	"""Train and validates a PyTorch model
+	
+	Args:
+		model (obj): A valid `torch.nn.Module` object to be trained.
+		epochs (int): Specifies the number of times to train the model
+		lr (float): Specifies the learning rate to train the model with.
+		train_loader (obj): A valid `torch.utils.DataLoader object containing the training data
+		valid_loader (obj): A valid `torch.utils.DataLoader object containing the validation data
+		class_to_idx (dict): A dictionary containing key to id mapping of all data in the training set
+		cat_to_name (dict): A dictionary containing key to category  mapping of each category in the cat_to_name file
+		save_dir (str): A directory to save the trained model. If `save_dir` doesn't exist model is saved to current folder
+		on_gpu (bool): Specifies if training should be done on GPU or not. Default is True.
+		model_arch (str): Specifies the desired model architecture. Takes either 'vgg' or 'resnet'. Default is 'resnet'
+
+	Returns:
+		None
+
+	"""
+	
+	
 	# Setting up training device to gpu or cpu
 	device = 'cuda' if torch.cuda.is_available() and on_gpu else 'cpu'
 	device = torch.device(device)
@@ -194,9 +246,9 @@ def train(model, epochs, lr, train_loader, valid_loader, class_to_idx, cat_to_na
 			
 			# calculate validation accuracy for each object class
 			for i in range(len(target.data)):
-			    label = target.data[i]
-			    class_correct[idx_to_class[label.item()]] += correct[i].item()
-			    class_total[idx_to_class[label.item()]] += 1
+				label = target.data[i]
+				class_correct[idx_to_class[label.item()]] += correct[i].item()
+				class_total[idx_to_class[label.item()]] += 1
 		
 		# calculate average losses
 		train_loss = train_loss / len(train_loader.dataset)
@@ -219,9 +271,9 @@ def train(model, epochs, lr, train_loader, valid_loader, class_to_idx, cat_to_na
 			model.cpu()
 			
 			try:
-				torch.save(save_model(model, model_arch, class_to_idx), save_dir + '/'+'model.pt')
+				torch.save(generate_checkpoint(model, model_arch, class_to_idx), save_dir + '/'+'model.pt')
 			except:
-				torch.save(save_model(model, model_arch, class_to_idx), 'model.pt')
+				torch.save(generate_checkpoint(model, model_arch, class_to_idx), 'model.pt')
 			
 			model.to(device)
 			valid_loss_min = valid_loss
@@ -230,7 +282,25 @@ def train(model, epochs, lr, train_loader, valid_loader, class_to_idx, cat_to_na
 
 
 
-def save_model(model, model_arch, class_to_idx):
+def generate_checkpoint(model, model_arch, class_to_idx):
+	"""Return a valid checkpoint for a PyTorch model
+	
+	Args:
+		model (obj): A valid `torch.nn.Module`
+		model_arch (str): Specifies the desired model architecture. Takes either 'vgg' or 'resnet'. Default is 'resnet'
+		class_to_idx (dict): A dictionary containing key to id mapping of all data in the training set:
+
+	Returns:
+		dict : A dictionary containing every info needed to reconstruct the trained model::
+			
+			{
+				'base_model': models.resnet152(), # if `model_arch` is 'resnet'
+				'classifier': model.fc, # if `model_arch` is 'resnet'
+				'state_dict': model.state_dict(),
+				'class_to_idx': class_to_idx
+			}
+	
+	"""
 	if model_arch == 'vgg':
 		checkpoint = {'base_model': models.vgg11(),
 		              'classifier': model.classifier,
