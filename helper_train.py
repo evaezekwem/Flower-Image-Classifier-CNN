@@ -18,10 +18,10 @@ def create_path(data_dir):
 
 	Returns:
 		tuple: Returns a tuple of strings for
-			`data_dir` - data directory
-			`train_dir` - training data
-			`valid_dir` - validation data
-			`test_dir` - test data
+			``data_dir`` - data directory
+			``train_dir`` - training data
+			``valid_dir`` - validation data
+			``test_dir`` - test data
 
 	"""
 	train_dir = data_dir + '/train'

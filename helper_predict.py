@@ -2,11 +2,6 @@ import os
 import torch
 from torchvision import models, transforms
 from PIL import Image
-import numpy as np
-import json
-
-# path = "C:/Users/eva4good/Google Drive/dlnd 2/flowers/mpagi.pt"
-# torch.save(models.vgg11(), path)
 
 def file_exist(file_path):
 	"""Return if a path exists or not
@@ -29,10 +24,10 @@ def load_checkpoint(checkpoint_path):
 
 	Returns:
 		tuple: Return a tuple of the following
-			`checkpoint_path` - A path to a valid PyTorch checkpoint file
-			`model` - A valid `torch.Module` object
-			`model._get_name()` - Name of the model
-			`class_to_idx` - Class to id mapping of the train data
+			``checkpoint_path`` - A path to a valid PyTorch checkpoint file
+			``model`` - A valid ``torch.Module`` object
+			``model._get_name()`` - Name of the model
+			``class_to_idx`` - Class to id mapping of the train data
 
 	"""
 	
@@ -55,7 +50,7 @@ def process_image(image_path, asNumpy=False):
 	
 	Args:
 		image_path (str): Path to the image to process
-		asNumpy (`str`, optional): Specifies if the image should be returned as a Numpy image or a Tensor image.
+		asNumpy (str, optional): Specifies if the image should be returned as a Numpy image or a Tensor image.
 			Default image is Tensor
 
 	Returns:
@@ -84,12 +79,12 @@ def predict(image_path, model, top_k, onGPU):
 	
 	Args:
 		image_path (str): Path to image to predict
-		model (obj): A valid `torch.nn.Module` object
+		model (obj): A valid ``torch.nn.Module`` object
 		top_k (int): Maximum number of classes and probabilities to return
 		onGPU (bool): Specifies if prediction should be done on GPU. Default is True
 
 	Returns:
-		obj: Returns a `torch.tensor` object containing `topk` number of classes and probabilities.
+		obj: Returns a ``torch.tensor`` object containing ``topk`` number of classes and probabilities.
 
 	"""
 	# Setting up training device to gpu or cpu
@@ -108,14 +103,14 @@ def get_names_probs(predict_output, cat_to_name, class_to_idx):
 	"""Return the names and probabilities of the predicted classes
 	
 	Args:
-		predict_output (obj): A `torch.tensor` object from typically with 2 tensors
+		predict_output (obj): A ``torch.tensor`` object from typically with 2 tensors
 		cat_to_name (dict): A dictionary containing key to category  mapping of each category in the cat_to_name file
 		class_to_idx (dict): Class to id mapping of the train data
 
 	Returns:
 		tuple: Returns a tuple of
-			`flower_names` - Name of the flowers predicted
-			`flower_probs` - Probabilities associated with each predicted flower
+			``flower_names`` - Name of the flowers predicted
+			``flower_probs`` - Probabilities associated with each predicted flower
 
 	"""
 	idx_to_class = {v: k for k, v in class_to_idx.items()}
