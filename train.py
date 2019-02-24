@@ -15,9 +15,25 @@ import torch.nn.functional as F
 from torchvision import datasets, transforms, models
 from collections import OrderedDict
 
-# main(args.data_dir, args.save_dir, args.model_arch, args.lr, args.hidden_units, args.epoch, args.on_gpu)
+
 def main(data_dir, save_dir, model_arch, lr, hidden_units, epoch, on_gpu):
-    # print("Data directory: {} \nSave directory: {}".format(data_dir, save_dir))
+    """Train a model on data set of 102 flowers
+    
+    The data set for the training can be found here
+    
+    Args:
+        data_dir (str): Specifies the directory containing the training, validation and test  data sets respectively.
+        save_dir (str): Specifies the directory where the trained model will be saved. Default is the current directory.
+        model_arch (str): Specifies the architecture of the model can either be 'vgg' or 'resnet'. Default is 'resnet'
+        lr (float): Contains the learning rate with which to train the model. Default is 0.01.
+        hidden_units (int): Contains the number of neurons in the hidden units. Default is 512.
+        epoch (int): Specifies the number of epochs to train the model for. Default is 3.
+        on_gpu (bool): Used to specify if training is to be done on GPU or CPU. Default is True.
+
+    Returns:
+        None
+    """
+
     
     
     all_dir = h.create_path(data_dir)
