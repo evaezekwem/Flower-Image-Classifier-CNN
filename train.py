@@ -2,6 +2,7 @@
 import argparse
 import helper_train as h
 
+
 def main(data_dir, save_dir, model_arch, lr, hidden_units, epoch, on_gpu):
     """Train a model on data set of 102 flowers
     
@@ -20,7 +21,6 @@ def main(data_dir, save_dir, model_arch, lr, hidden_units, epoch, on_gpu):
         $ python train.py "C:\\Users\\ComputerName\\Documents\\flower_data\\flower_data" --lr 0.1 --epoch 30"
         
     """
-
     
     
     all_dir = h.create_path(data_dir)
@@ -43,11 +43,6 @@ def main(data_dir, save_dir, model_arch, lr, hidden_units, epoch, on_gpu):
     h.train(model, epoch, lr, train_loader, valid_loader, class_to_idx, cat_to_name, save_dir, on_gpu, model_arch)
     
     
-    
-    
-    
-    
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='A \
              simple app to train a neural net')
@@ -77,4 +72,5 @@ if __name__ == '__main__':
     print("epochs...........................{}".format(args.epochs))
     print("gpu..............................{}".format(args.on_gpu))
     print("#################....Parameters....##################")
+    
     main(args.data_dir, args.save_dir, args.model_arch, args.lr, args.hidden_units, args.epochs, args.on_gpu)
