@@ -1,20 +1,6 @@
 # Imports here
-import os
 import argparse
 import helper_train as h
-# import matplotlib.pyplot as plt
-# import json
-# from PIL import Image
-
-import numpy as np
-import torch
-from torch import nn
-
-from torch.autograd import Variable
-import torch.nn.functional as F
-from torchvision import datasets, transforms, models
-from collections import OrderedDict
-
 
 def main(data_dir, save_dir, model_arch, lr, hidden_units, epoch, on_gpu):
     """Train a model on data set of 102 flowers
@@ -31,7 +17,8 @@ def main(data_dir, save_dir, model_arch, lr, hidden_units, epoch, on_gpu):
         on_gpu (bool): Used to specify if training is to be done on GPU or CPU. Default is True.
 
     Example:
-        $ python train.py "C:\Users\ComputerName\Documents\flower_data\flower_data" --lr 0.1 --epoch 30
+        $ python train.py "C:\\Users\\ComputerName\\Documents\\flower_data\\flower_data" --lr 0.1 --epoch 30"
+        
     """
 
     
