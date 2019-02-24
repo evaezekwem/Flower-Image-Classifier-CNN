@@ -30,8 +30,8 @@ def main(data_dir, save_dir, model_arch, lr, hidden_units, epoch, on_gpu):
         epoch (int): Specifies the number of epochs to train the model for. Default is 3.
         on_gpu (bool): Used to specify if training is to be done on GPU or CPU. Default is True.
 
-    Returns:
-        None
+    Example:
+        $ python train.py "C:\Users\ComputerName\Documents\flower_data\flower_data" --lr 0.1 --epoch 30
     """
 
     
